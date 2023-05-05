@@ -493,6 +493,10 @@ class CareerEditor():
             """ Update the Canvas scrollregion. """
             CareerEditor.EditorWidgets.editorWidgetCanvas.configure(scrollregion = CareerEditor.EditorWidgets.editorWidgetCanvas.bbox("all"))
 
+        # Update status bar.
+        def update_status(value: str) -> None:
+            editorStatusBar.config(text = value)
+
         editorTitleLabel = Label(editorBuilderPane, text = 'Tier Editor Pane: Build the progression for the Guitar Career.', bg = '#FFFFFF', justify = 'left', anchor = 'nw')
         editorTitleLabel.pack(anchor = 'nw')
 
@@ -516,7 +520,7 @@ class CareerEditor():
         editorWidgetCanvas.create_window((0, 0), window = editorBuilderWidgetFrame, anchor = 'nw')
 
         global editorStatusBar
-        editorStatusBar = Label(root, text = "Status bar text", anchor = 'w', justify = 'left', relief = 'sunken', bg = '#FFFFFF', width = 145)
+        editorStatusBar = Label(root, text = "", anchor = 'w', justify = 'left', relief = 'sunken', bg = '#FFFFFF', width = 145)
         editorStatusBar.grid(row = 2, column = 0, columnspan = 999, sticky = 'sw')
 
     # The widgets in the preview pane (right pane).
