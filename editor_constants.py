@@ -16,7 +16,9 @@ MENU_HOVER_FG = '#000000'
 HOVER_DELAY = 0.35
 TOOLTIP_WIDTH = 500
 
+FONT_INFO = ('Segoe UI', 9)
 FONT_INFO_HEADER = ('Segoe UI', 10)
+FONT_INFO_TITLE_BAR = ('Segoe UI', 14)
 
 # List of the venues, their zone PAK names, and their poster IDs.
 TIER_VENUE_LIST = [
@@ -45,45 +47,10 @@ TIER_VENUE_LIST = [
 TIER_ID_ORDER = [1, 2, 3, 4, 5, 6, 7, 8, 14, 15, 9, 16, 10, 11, 12, 13, 18, 17]
 """ ID list of Tiers in the program's execution. Maybe this works? """
 
-#
+# Help text list.
+# finalList = []
+# with (open(resource_path('res/help.txt'))) as helpFile:
+#     for (line) in (helpFile): finalList.append(line)
 
-"""
-Script CE_AdjustTier [
-    :s{ $params$=:s{:s} :s}
-
-    :i $printf$ %s("Adjusting tier %g in structure %h...") $g$=%GLOBAL%$tier$ $h$=%GLOBAL%$structure$
-    
-    // Is this even a valid structure?
-    :i if NOT $GlobalExists$ $name$=%GLOBAL%$structure$
-        :i $printf$ %s("  Global struct did not exist.")
-        :i return
-    :i endif
-    
-    // Get the structure, this dereferences it for easy access.
-    // Makes the code more readable, really.
-    :i $progression_struct$ = (~%GLOBAL%$structure$)
-    
-    // Does this even contain the tier?
-    :i if NOT $StructureContains$ $structure$=%GLOBAL%$progression_struct$ %GLOBAL%$tier$
-        :i $printf$ %s("  Tier was not a part of the structure.")
-        :i return
-    :i endif
-    
-    // Now get the tier, we'll append things to it.
-    :i $tier_struct$ = (%GLOBAL%$progression_struct$ -> %GLOBAL%$tier$)
-    
-    // Append our parameters to it.
-    :i $tier_struct$ = :s{
-        :i %GLOBAL%$tier_struct$
-        :i %GLOBAL%$params$
-    :i :s}
-    
-    // Now we need to throw our NEW tier into our progression struct.
-    // AddToGlobalStruct is part of WTDE's modding API.
-    
-    :i $printf$ %s("  Patching globalmap progression structure...")
-    :i $AddToGlobalStruct$ $id$=%GLOBAL%$structure$ $field$=%GLOBAL%$tier$ $element$=%GLOBAL%$tier_struct$
-
-    :i endfunction
-]
-"""
+# HELP_TEXT = finalList
+# """ The list holding all Help text. """

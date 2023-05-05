@@ -34,6 +34,8 @@ class ImageConst():
     resizedLogoImage = logoIMG.resize((128, 128), Image.ADAPTIVE)
     LOGO_IMAGE = ImageTk.PhotoImage(resizedLogoImage)
 
+    LOGO_IMAGE_NORMAL = ImageTk.PhotoImage(Image.open(resource_path('res/logo.png')))
+
     TIER_EDITOR_IMAGE = ImageTk.PhotoImage(Image.open(resource_path('res/icons/tier_editor.png')))
 
     QB_EDITOR_IMAGE = ImageTk.PhotoImage(Image.open(resource_path('res/icons/qb_editor.png')))
@@ -538,13 +540,44 @@ class CareerEditor():
         editorQBTitleLabel = Label(editorQBFrame, text = 'QB Script Editor: Edit the career progression in QB form.', bg = '#FFFFFF', justify = 'left', anchor = 'nw', font = FONT_INFO_HEADER)
         editorQBTitleLabel.pack(fill = 'x', anchor = 'nw')
 
-
 # Add top menu stuff.
 class TopMenu():
     """ Add the top menus. """
     # Help text window.
     def help_window() -> None:
-        pass
+        """ The help pages window. """
+        helpWindowRoot = Tk()
+        helpWindowRoot.title("GHWT Career Editor Help")
+        helpWindowRoot.iconbitmap(resource_path('res/menuicons/help.ico'))
+        helpWindowRoot.geometry("768x768")
+        helpWindowRoot.config(bg = '#FFFFFF')
+        helpWindowRoot.focus_force()
+
+        # helpWindowLogo = Label(helpWindowRoot, image = ImageConst.LOGO_IMAGE, bg = '#FFFFFF')
+        # helpWindowLogo.pack(fill = 'x', anchor = 'n')
+
+        helpWindowTitleHeader = Label(helpWindowRoot, text = "GHWT Career Editor Help", font = FONT_INFO_TITLE_BAR, bg = '#FFFFFF', fg = '#000000', justify = 'left', anchor = 'nw')
+        helpWindowTitleHeader.pack(fill = 'x', anchor = 'nw')
+
+        helpWindowTextBody = Text(helpWindowRoot, relief = 'flat', bd = 0, bg = '#FFFFFF', font = FONT_INFO, wrap = 'word')
+        helpWindowTextBody.pack(side = 'left', fill = 'both', expand = 1)
+
+        with (open(resource_path('res/help.txt'))) as txtFile:
+            helpWindowTextBody.delete(1.0, END)
+            for (line) in (txtFile): helpWindowTextBody.insert(END, line)
+
+        helpWindowTextBody.config(state = 'disabled')
+
+        helpWindowScrollbar = TTK.Scrollbar(helpWindowRoot, orient = 'vertical', command = helpWindowTextBody.yview)
+        helpWindowScrollbar.pack(side = 'right', fill = 'y')
+
+        helpWindowTextBody.config(yscrollcommand = helpWindowScrollbar.set)
+
+        helpWindowRoot.mainloop()
+
+    # Help window keyboard binding.
+    def help_window_key(event) -> None:
+        TopMenu.help_window()
 
     # Make the base menu.
     topMenu = Menu(root)
@@ -568,7 +601,7 @@ class TopMenu():
     topMenu.add_cascade(label = 'Help', menu = helpMenu)
     helpMenu.add_command(label = " About GHWT Career Editor", image = ImageConst.MenuIcons.ABOUT_IMAGE, compound = 'left')
     helpMenu.add_separator()
-    helpMenu.add_command(label = " Help Pages", accelerator = "(F1)", image = ImageConst.MenuIcons.HELP_IMAGE, compound = 'left')
+    helpMenu.add_command(label = " Help Pages", accelerator = "(F1)", command = help_window, image = ImageConst.MenuIcons.HELP_IMAGE, compound = 'left')
 
 # Add global keybinds.
 class KeyBindPresses():
@@ -584,6 +617,9 @@ class KeyBindPresses():
 
     # Add New Tier
     root.bind_all('<Control-t>', lambda e: CareerEditor.EditorWidgets.add_new_tier_key(e))
+
+    # Help Pages
+    root.bind_all('<F1>', lambda e: TopMenu.help_window_key(e))
 
 # Enter main loop.
 root.mainloop()
