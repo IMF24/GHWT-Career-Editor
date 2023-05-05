@@ -1,0 +1,47 @@
+// = - = - = - = - = - = - = - = - = - = - = - = - = - =
+//  G H W T     C A R E E R     M O D     E D I T O R
+// = - = - = - = - = - = - = - = - = - = - = - = - = - =
+
+Unknown [GHWT_HEADER]
+
+// Adjust tiers. Code by Zedek the Plague Doctor
+Script CE_AdjustTier [
+    :s{ $params$=:s{:s} :s}
+
+    :i $printf$ %s("Adjusting tier %g in structure %h...") $g$=%GLOBAL%$tier$ $h$=%GLOBAL%$structure$
+    
+    // Is this even a valid structure?
+    :i if NOT $GlobalExists$ $name$=%GLOBAL%$structure$
+        :i $printf$ %s("  Global struct did not exist.")
+        :i return
+    :i endif
+    
+    // Get the structure, this dereferences it for easy access.
+    // Makes the code more readable, really.
+    :i $progression_struct$ = (~%GLOBAL%$structure$)
+    
+    // Does this even contain the tier?
+    :i if NOT $StructureContains$ $structure$=%GLOBAL%$progression_struct$ %GLOBAL%$tier$
+        :i $printf$ %s("  Tier was not a part of the structure.")
+        :i return
+    :i endif
+    
+    // Now get the tier, we'll append things to it.
+    :i $tier_struct$ = (%GLOBAL%$progression_struct$ -> %GLOBAL%$tier$)
+    
+    // Append our parameters to it.
+    :i $tier_struct$ = :s{
+        :i %GLOBAL%$tier_struct$
+        :i %GLOBAL%$params$
+    :i :s}
+    
+    // Now we need to throw our NEW tier into our progression struct.
+    // AddToGlobalStruct is part of WTDE's modding API.
+    
+    :i $printf$ %s("  Patching globalmap progression structure...")
+    :i $AddToGlobalStruct$ $id$=%GLOBAL%$structure$ $field$=%GLOBAL%$tier$ $element$=%GLOBAL%$tier_struct$
+
+    :i endfunction
+]
+
+// Now that the mod is loaded, let's add our custom stuff!
