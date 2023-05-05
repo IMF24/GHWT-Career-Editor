@@ -345,18 +345,18 @@ class CareerEditor():
 
                         # We also need to make an INI file.
                         with (open("Mod.ini", 'w')) as iniOut:
-                            modName = ""
-                            modDesc = ""
-                            modAuthor = ""
-                            modVersion = ""
+                            modName = exportModININame.get()
+                            modDesc = exportModINIDesc.get()
+                            modAuthor = exportModINIAuthor.get()
+                            modVersion = exportModINIVersion.get()
 
-                            if (not exportModININame.get()): modName = outFile
+                            if (not modName): modName = outFile
 
-                            if (not exportModINIDesc.get()): modDesc = f"Created with GHWT Career Editor V{VERSION}"
+                            if (not modDesc): modDesc = f"Created with GHWT Career Editor V{VERSION}"
 
-                            if (not exportModINIAuthor.get()): modAuthor = "GHWT Career Editor"
+                            if (not modAuthor): modAuthor = "GHWT Career Editor"
 
-                            if (not exportModINIVersion.get()): modVersion = "1.0"
+                            if (not modVersion): modVersion = "1.0"
 
                             outText =  "[ModInfo]\n" \
                                       f"Name={modName}\n" \
