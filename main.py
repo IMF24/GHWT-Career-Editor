@@ -99,13 +99,13 @@ class CareerEditor():
 
     # This pane is for the actual graphical editor.
     global editorBuilderPane
-    editorBuilderPane = PanedWindow(editorCareerFrame, bd = 1, relief = 'sunken', bg = 'white', width = 555)
-    editorWidgetPane.add(editorBuilderPane, width = 555)
+    editorBuilderPane = PanedWindow(editorCareerFrame, bd = 1, relief = 'sunken', bg = 'white', width = 555, height = 640)
+    editorWidgetPane.add(editorBuilderPane, width = 555, height = 640)
 
     # This is the preview pane.
     global editorPreviewPane
-    editorPreviewPane = PanedWindow(editorCareerFrame, bd = 1, relief = 'sunken', bg = 'white', width = 300)
-    editorWidgetPane.add(editorPreviewPane)
+    editorPreviewPane = PanedWindow(editorCareerFrame, bd = 1, relief = 'sunken', bg = 'white', width = 310, height = 640)
+    editorWidgetPane.add(editorPreviewPane, width = 280, height = 640)
     
     # The widgets in the editing pane itself (left pane).
     class EditorWidgets():
@@ -497,7 +497,7 @@ class CareerEditor():
         def update_status(value: str) -> None:
             editorStatusBar.config(text = value)
 
-        editorTitleLabel = Label(editorBuilderPane, text = 'Tier Editor Pane: Build the progression for the Guitar Career.', bg = '#FFFFFF', justify = 'left', anchor = 'nw')
+        editorTitleLabel = Label(editorBuilderPane, text = 'Tier Editor Pane: Build the progression for the Guitar Career.', bg = '#FFFFFF', justify = 'left', anchor = 'nw', font = FONT_INFO_HEADER)
         editorTitleLabel.pack(anchor = 'nw')
 
         editorAddTier = TTK.Button(editorBuilderPane, text = "Add New Tier", width = 15, command = add_new_tier)
@@ -521,7 +521,7 @@ class CareerEditor():
 
         global editorStatusBar
         editorStatusBar = Label(root, text = "", anchor = 'w', justify = 'left', relief = 'sunken', bg = '#FFFFFF', width = 145)
-        editorStatusBar.grid(row = 2, column = 0, columnspan = 999, sticky = 'sw')
+        editorStatusBar.place(x = 0, y = 677)
 
     # The widgets in the preview pane (right pane).
     class PreviewWidgets():
@@ -531,6 +531,13 @@ class CareerEditor():
 
         previewMasterFrame = Frame(editorPreviewPane, bg = '#FFFFFF')
         previewMasterFrame.pack(pady = 10, fill = 'both', expand = 1)
+
+    # The widgets in the QB Script Editor tab.
+    class QBScriptEditor():
+        """ The widgets in the QB Script Editor tab. """
+        editorQBTitleLabel = Label(editorQBFrame, text = 'QB Script Editor: Edit the career progression in QB form.', bg = '#FFFFFF', justify = 'left', anchor = 'nw', font = FONT_INFO_HEADER)
+        editorQBTitleLabel.pack(fill = 'x', anchor = 'nw')
+
 
 # Add top menu stuff.
 class TopMenu():
