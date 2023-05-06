@@ -306,9 +306,11 @@ class CareerEditor():
                         qbOut.write("        :i $params$ = :s{\n")
 
                         songListString = ":a{ "
-                        for (song) in (tierSongs[i]):
-                            finalSong = tierSongs[i][-1]
-                            songListString += f"${song}$ "
+                        if (len(tierSongs[i]) > 0):
+                            for (song) in (tierSongs[i]):
+                                finalSong = tierSongs[i][-1]
+                                songListString += f"${song}$ "
+                                
                         songListString += ":a}"
 
                         qbOut.write(f"            :i $songs$ = {songListString}\n            :i $encorep1$ = ${finalSong}$\n")
