@@ -88,6 +88,7 @@ class CareerEditor():
     # Total rows of the Career Editor tiers. Increment this each time we add a new gig.
     global totalRows
     totalRows = 0
+    """ Total rows of the Career Editor tiers. Incremented each time a new gig is added. """
 
     # Tier song rows.
     global tierSongNumbers
@@ -244,6 +245,8 @@ class CareerEditor():
             # Main export logic.
             def export_execute() -> None:
                 """ Main export logic script. Using `mod_base.txt`, we'll build our script from there. """
+                reset_working_directory()
+
                 # Filter out all spaces and turn the name into upper camel casing (UpperCamelCase). We'll also use outFile as the function name.
                 outFile = exportModName.get().replace(" ", "")
 
@@ -259,6 +262,7 @@ class CareerEditor():
                         for (line) in (base): qbOut.write(line)
 
                 outFilePath = resource_path(f"{outFile}.txt")
+                print(outFilePath)
                 
                 # Now comes the fun stuff: Read each tier, and get its songs.
                 tierSongs = []
@@ -281,8 +285,10 @@ class CareerEditor():
 
                 print(tierSongs)
 
+                if (not OS.path.exists(outFile)): OS.mkdir(outFile)
+
                 # Open the file for writing, let's get into the meat of it all!
-                with (open(f"{outFile}.txt", 'a')) as qbOut:
+                with (open(f"{outFile}\\{outFile}.txt", 'a')) as qbOut:
                     debugMessage = exportDialogDebugEntry.get()
 
                     if (not debugMessage): debugMessage = "Setting up custom career..."
@@ -310,10 +316,18 @@ class CareerEditor():
                             for (song) in (tierSongs[i]):
                                 finalSong = tierSongs[i][-1]
                                 songListString += f"${song}$ "
-                                
+
                         songListString += ":a}"
 
-                        qbOut.write(f"            :i $songs$ = {songListString}\n            :i $encorep1$ = ${finalSong}$\n")
+                        qbOut.write(f"            :i $songs$ = {songListString}\n")
+
+                        # We need to filter out the zones and not add encore songs to gigs that were paid gigs.
+                        if (not venue_get_aspect('zone', venue) == 'z_tool') and \
+                           (not venue_get_aspect('zone', venue) == 'z_hotel') and \
+                           (not venue_get_aspect('zone', venue) == 'z_studio2') and \
+                           (not venue_get_aspect('zone', venue) == 'z_scifi') and \
+                           (not venue_get_aspect('zone', venue) == 'z_credits'):
+                               qbOut.write(f"            :i $encorep1$ = ${finalSong}$\n")
 
                         qbOut.write(f"            :i $level$ = $load_{venue_get_aspect('zone', venue)}$\n")
                         
@@ -342,7 +356,7 @@ class CareerEditor():
                             OS.system(cmd)
 
                         except Exception as excep:
-                            MSG.showerror("Terminal Error", f"An error occurred when trying to parse the command through the terminal.\n\n{excep}")
+                            MSG.showerror("Terminal Error", f"An error occurred when trying to parse the command through the terminal:\n\n{excep}")
                             return
                         
                         reset_working_directory()
@@ -371,12 +385,10 @@ class CareerEditor():
                             iniOut.write(outText)
 
                 # Move these files to a folder!
-                if (not OS.path.exists(outFile)): OS.mkdir(outFile)
-                
                 filesToMove = ['Mod.ini', f'{outFile}.qb.xen', f'{outFile}.txt']
 
                 for (file) in (filesToMove):
-                    if (OS.path.exists(f"{outFile}/{file}")): OS.remove(f"{outFile}/{file}")
+                    if (OS.path.exists(f"{outFile}\\{file}")): OS.remove(f"{outFile}\\{file}")
                     SHUT.move(file, outFile)
 
                 # Let the user know that we're all done!
@@ -536,11 +548,11 @@ class CareerEditor():
         previewMasterFrame = Frame(editorPreviewPane, bg = '#FFFFFF')
         previewMasterFrame.pack(pady = 10, fill = 'both', expand = 1)
 
-    # The widgets in the QB Script Editor tab.
-    class QBScriptEditor():
-        """ The widgets in the QB Script Editor tab. """
-        editorQBTitleLabel = Label(editorQBFrame, text = 'QB Script Editor: Edit the career progression in QB form.', bg = '#FFFFFF', justify = 'left', anchor = 'nw', font = FONT_INFO_HEADER)
-        editorQBTitleLabel.pack(fill = 'x', anchor = 'nw')
+# The widgets in the QB Script Editor tab.
+class QBScriptEditor():
+    """ The widgets in the QB Script Editor tab. """
+    editorQBTitleLabel = Label(editorQBFrame, text = 'QB Script Editor: Edit the career progression in QB form.', bg = '#FFFFFF', justify = 'left', anchor = 'nw', font = FONT_INFO_HEADER)
+    editorQBTitleLabel.pack(fill = 'x', anchor = 'nw')
 
 # Add top menu stuff.
 class TopMenu():

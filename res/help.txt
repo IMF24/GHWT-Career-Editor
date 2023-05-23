@@ -1,4 +1,4 @@
-If you want to view the online documentation, view it here: <link coming soon>
+If you want to view the online documentation, view it here: https://ghwt.de/wiki/#/wtde/wtde_career_editor
 
 The GHWT Career Editor is a very basic program that constructs a script mod for Guitar Hero World Tour: Definitive Edition that allows for you to create custom careers! In order to make the most use of this program, it helps to know a bit about it.
 
